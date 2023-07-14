@@ -6,7 +6,6 @@ import SignupPage from "./pages/SignupPage/SignupPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage"
 import RestaurantList from './pages/Restaurants/Restaurants';
 import ReservationsPage from './pages/ReservationsPage/ReservationsPage';
-import UserReservations from './pages/ReservationsUser/ReservationsUser';
 
 function App() {
   return (
@@ -32,9 +31,6 @@ function App() {
       </Routes>
       <Routes>
       <Route path="/reservations" element={<ReservationsPage/>} />
-      </Routes>
-      <Routes>
-      <Route path="/reservationsUser" element={<UserReservations/>} />
       </Routes>
     </div>
   );
