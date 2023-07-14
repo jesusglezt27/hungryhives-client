@@ -145,7 +145,7 @@ const ReservationsPage = () => {
               onChange={handleChange}
             />
             <Button type="submit" variant="contained" color="primary" fullWidth>
-              Reservar
+              Reserva prro
             </Button>
           </form>
         </Grid>
