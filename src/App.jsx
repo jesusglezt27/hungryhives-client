@@ -6,6 +6,7 @@ import SignupPage from "./pages/SignupPage/SignupPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage"
 import RestaurantList from './pages/Restaurants/Restaurants';
 import ReservationsPage from './pages/ReservationsPage/ReservationsPage';
+import User from './pages/user/User';
 
 function App() {
   return (
@@ -31,6 +32,9 @@ function App() {
       </Routes>
       <Routes>
       <Route path="/reservations" element={<ReservationsPage/>} />
+      </Routes>
+      <Routes>
+      <Route path="/user" element={<User/>} />
       </Routes>
     </div>
   );

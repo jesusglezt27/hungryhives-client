@@ -4,8 +4,6 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/auth.context';
@@ -23,9 +21,14 @@ function Navbar() {
             </Link>
           </Typography>
           {isLoggedIn ? (
-            <Button color="inherit" variant="h6" component={Link} to="/Profile">
-              Profile
-            </Button>
+            <>
+              <Button color="inherit" variant="h6" component={Link} to="/Profile">
+                Profile
+              </Button>
+              <Button color="inherit" variant="h6" component={Link} to="/user">
+                My Reservations
+              </Button>
+            </>
           ) : (
             <>
               <Button color="inherit" variant="h6" component={Link} to="/Login">

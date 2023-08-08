@@ -38,9 +38,9 @@ const RestaurantList = () => {
                   {restaurant.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Estrellas: {restaurant.stars}
+                  Rate: {restaurant.stars}
                 </Typography>
-                <Button component={Link} to={`/reservations/${restaurant._id}`}>
+                <Button variant="contained" color="primary" component={Link} to={`/reservations/${restaurant._id}`}>
                   Reservar
                 </Button>
               </CardContent>

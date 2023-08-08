@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Typography, TextField, Button, CircularProgress, Card, CardContent, CardMedia, Grid } from '@mui/material';
+import { Typography, TextField, Button, CircularProgress, Card, CardContent, CardMedia, Grid, Snackbar } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import { AuthContext } from '../../context/auth.context';
 
 const ReservationsPage = () => {
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
   const [restaurant, setRestaurant] = useState(null);
   const [reservationData, setReservationData] = useState({
     name: '',
-    email: '',
     date: '',
     time: '',
     partySize: ''
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [isReservationMade, setIsReservationMade] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:5005/api/restaurants/${id}`)
@@ -30,7 +34,6 @@ const ReservationsPage = () => {
       })
       .catch(error => {
         console.log(error);
-        // Manejo de errores
       });
   }, [id]);
 
@@ -43,29 +46,43 @@ const ReservationsPage = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(reservationData);
 
-    fetch(`http://localhost:5005/api/restaurants/${id}/reservations`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(reservationData)
-    })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Error al realizar la reserva');
-        }
+    const isAllFieldsFilled = Object.values(reservationData).every(field => field);
+    if (!isAllFieldsFilled) {
+      setOpenSnackbar(true);
+      return;
+    }
+
+    if (user) {
+      const reservationWithUserId = {
+        ...reservationData,
+        user: user._id
+      };
+
+      fetch(`http://localhost:5005/api/restaurants/${id}/reservations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reservationWithUserId)
       })
-      .then(data => {
-        console.log('Reserva creada:', data);
-      })
-      .catch(error => {
-        console.log(error);
-        // Manejo de errores
-      });
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Error al realizar la reserva');
+          }
+        })
+        .then(data => {
+          console.log('Reserva creada:', data);
+          setIsReservationMade(true);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      console.log("No hay un usuario logeado");
+    }
   };
 
   if (isLoading) {
@@ -84,8 +101,8 @@ const ReservationsPage = () => {
               alt={restaurant.name}
             />
             <CardContent>
-              <Typography variant="h5">Reservar mesa en {restaurant.name}</Typography>
-              <Typography variant="body1">Estrellas: {restaurant.stars}</Typography>
+              <Typography variant="h5">La Moresca {restaurant.name}</Typography>
+              <Typography variant="body1">Rate: {restaurant.stars}</Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -94,23 +111,13 @@ const ReservationsPage = () => {
         <Grid item xs={12} sm={8} md={6}>
           <form onSubmit={handleSubmit}>
             <TextField
-              label="Nombre"
+              label="Name"
               variant="outlined"
               fullWidth
               margin="normal"
               id="name"
               name="name"
               value={reservationData.name}
-              onChange={handleChange}
-            />
-            <TextField
-              label="Correo electrónico"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              id="email"
-              name="email"
-              value={reservationData.email}
               onChange={handleChange}
             />
             <TextField
@@ -134,7 +141,7 @@ const ReservationsPage = () => {
               onChange={handleChange}
             />
             <TextField
-              label="Numero de personas"
+              label="Number of Guests"
               variant="outlined"
               fullWidth
               margin="normal"
@@ -144,12 +151,31 @@ const ReservationsPage = () => {
               value={reservationData.partySize}
               onChange={handleChange}
             />
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              Reserva prro pero en fa
-            </Button>
+            {isReservationMade ? (
+              <Link to="/user">
+                <Button type="button" variant="contained" color="secondary" fullWidth>
+                Manage Reservations
+                </Button>
+              </Link>
+            ) : (
+              <Button type="submit" variant="contained" color="primary" fullWidth>
+                Book Table
+              </Button>
+            )}
           </form>
         </Grid>
       </Grid>
+
+      <Snackbar 
+        open={openSnackbar} 
+        autoHideDuration={6000} 
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={() => setOpenSnackbar(false)} severity="warning" sx={{ width: '100%' }}>
+          Please fill in all the required fields before making a reservation.
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../../services/auth.service";
 import TextField from "@mui/material/TextField";
@@ -14,46 +14,70 @@ function SignupPage() {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [errorMessage, setErrorMessage] = useState(undefined);
+  const [loading, setLoading] = useState(false);
   const { storeToken, authenticateUser } = useContext(AuthContext);
-
-
   const navigate = useNavigate();
 
-  const handleEmail = (e) => setEmail(e.target.value);
-  const handlePassword = (e) => setPassword(e.target.value);
-  const handleName = (e) => setUsername(e.target.value);
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMessage]);
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password) => {
+    if (password.length < 8) {
+      return "La contraseña debe tener al menos 8 caracteres.";
+    }
+    if (!/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
+      return "La contraseña debe contener al menos una letra y un número.";
+    }
+    return null;
+  };
 
   const handleSignupSubmit = (e) => {
     e.preventDefault();
-    // Create an object representing the request body
-    const requestBody = { email, password, username };
+    setLoading(true);
 
-    // Send a request to the server using axios
-    /* 
-    const authToken = localStorage.getItem("authToken");
-    axios.post(
-      `${process.env.REACT_APP_SERVER_URL}/auth/signup`, 
-      requestBody, 
-      { headers: { Authorization: `Bearer ${authToken}` },
-    })
-    .then((response) => {})
-    */
-    console.log(requestBody)
-    // Or using a service
+    if (!validateEmail(email)) {
+      setErrorMessage("Por favor, introduce un email válido.");
+      setLoading(false);
+      return;
+    }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setErrorMessage(passwordError);
+      setLoading(false);
+      return;
+    }
+
+    if (!username.trim()) {
+      setErrorMessage("El nombre de usuario no puede estar vacío.");
+      setLoading(false);
+      return;
+    }
+
+    const requestBody = { email, password, username };
     authService
       .signup(requestBody)
       .then((response) => {
-        // If the POST request is successful redirect to the login page
         storeToken(response.data.authToken);
         authenticateUser();
         navigate("/");
       })
       .catch((error) => {
-        console.log("textito", error)
-        // If the request resolves with an error, set the error message in the state
         const errorDescription = error.response.data.message;
         setErrorMessage(errorDescription);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -79,29 +103,26 @@ function SignupPage() {
           type="email"
           name="email"
           value={email}
-          onChange={handleEmail}
+          onChange={(e) => setEmail(e.target.value)}
         />
-
         <TextField
           label="Password"
           variant="outlined"
           type="password"
           name="password"
           value={password}
-          onChange={handlePassword}
+          onChange={(e) => setPassword(e.target.value)}
         />
-
         <TextField
           label="Name"
           variant="outlined"
           type="text"
           name="username"
           value={username}
-          onChange={handleName}
+          onChange={(e) => setUsername(e.target.value)}
         />
-
-        <Button variant="contained" type="submit" sx={{ mt: 2 }}>
-          Sign Up
+        <Button variant="contained" type="submit" sx={{ mt: 2 }} disabled={loading}>
+          {loading ? "Registrando..." : "Sign Up"}
         </Button>
       </Box>
 

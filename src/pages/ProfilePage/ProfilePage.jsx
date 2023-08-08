@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
 function ProfilePage() {
-  const { logOutUser } = useContext(AuthContext);
+  const { user, logOutUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -15,9 +15,16 @@ function ProfilePage() {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <Typography variant="h4" component="h1" mt={5}>
-        Profile
+    <Box sx={{ 
+      display: "flex", 
+      flexDirection: "column", 
+      alignItems: "center",
+      justifyContent: "center", // Centra los elementos en el eje vertical
+      minHeight: "100vh", // Altura mínima del 100% de la altura de la ventana
+    }}>
+
+      <Typography variant="h6" component="h2" mt={3}>
+        Welcome, {user?.username || "User"}
       </Typography>
 
       <Box
@@ -29,11 +36,6 @@ function ProfilePage() {
           width: 300,
         }}
       >
-        <Typography variant="body1" component="p" mt={2}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at
-          porttitor sem. Aliquam erat volutpat. Donec placerat nisl magna, et
-          faucibus arcu condimentum sed.
-        </Typography>
       </Box>
 
       <Button variant="contained" onClick={handleLogout} sx={{ mt: 2 }}>
