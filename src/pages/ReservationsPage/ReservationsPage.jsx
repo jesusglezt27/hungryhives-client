@@ -59,7 +59,7 @@ const ReservationsPage = () => {
         user: user._id
       };
 
-      fetch(`http://localhost:5005/api/restaurants/${id}/reservations`, {
+      fetch(`https://hungryhives-server-5.vercel.app/api/restaurants/${id}/reservations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
