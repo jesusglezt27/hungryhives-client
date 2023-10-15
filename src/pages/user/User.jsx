@@ -17,7 +17,7 @@ const User = () => {
   }, [user]);
 
   const fetchReservations = () => {
-    fetch(`https://hungryhives-deployed-vercel-2-n9rlk71ax-jesusglezt27.vercel.app/api/restaurants/user/${user._id}/reservations`)
+    fetch(`https://hungryhives-server-4-ko5e1hcj2-jesusglezt27.vercel.app//api/restaurants/user/${user._id}/reservations`)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -36,7 +36,7 @@ const User = () => {
   }
 
   const handleDelete = (id) => {
-    fetch(`https://hungryhives-deployed-vercel-2-n9rlk71ax-jesusglezt27.vercel.app/api/restaurants/reservations/${id}`, {
+    fetch(`https://hungryhives-server-4-ko5e1hcj2-jesusglezt27.vercel.app//api/restaurants/reservations/${id}`, {
       method: 'DELETE'
     })
       .then(response => {
@@ -59,7 +59,7 @@ const User = () => {
       return;
     }
 
-    fetch(`https://hungryhives-deployed-vercel-2-n9rlk71ax-jesusglezt27.vercel.app/api/restaurants/reservations/${id}`, {
+    fetch(`https://hungryhives-server-4-ko5e1hcj2-jesusglezt27.vercel.app//api/restaurants/reservations/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
