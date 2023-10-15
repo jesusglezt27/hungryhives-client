@@ -3,7 +3,7 @@ import axios from "axios";
 class AuthService {
   constructor() {
     this.api = axios.create({
-      baseURL: process.env.REACT_APP_SERVER_URL || "https://hungryhives-server-4-ko5e1hcj2-jesusglezt27.vercel.app/",
+      baseURL: process.env.REACT_APP_SERVER_URL || "https://hungryhives-server-5.vercel.app",
     });
 
     // Automatically set JWT token on the request headers for every request
@@ -22,19 +22,19 @@ class AuthService {
   login = (requestBody) => {
     return this.api.post("/auth/login", requestBody);
     // same as
-    // return axios.post("https://hungryhives-server-4-ko5e1hcj2-jesusglezt27.vercel.app//auth/login");
+    // return axios.post("http://localhost:5005/auth/login");
   };
 
   signup = (requestBody) => {
     return this.api.post("/auth/signup", requestBody);
     // same as
-    // return axios.post("https://hungryhives-server-4-ko5e1hcj2-jesusglezt27.vercel.app//auth/singup");
+    // return axios.post("http://localhost:5005/auth/singup");
   };
 
   verify = () => {
     return this.api.get("/auth/verify");
     // same as
-    // return axios.post("https://hungryhives-server-4-ko5e1hcj2-jesusglezt27.vercel.app//auth/verify");
+    // return axios.post("http://localhost:5005/auth/verify");
   };
 }
 
