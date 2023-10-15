@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Card, CardActions, CardContent, CardMedia, Button, Typography} from '@mui/material'
+import {Card, CardMedia, Button, Typography} from '@mui/material'
 import backgroundImage from '../../images/fifa.jpg';
 import {Link} from 'react-router-dom'
 import {useContext} from 'react'

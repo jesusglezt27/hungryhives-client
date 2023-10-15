@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext} from 'react';
 import { AuthContext } from '../../context/auth.context';
 import { Link } from 'react-router-dom';
-import { Typography, Devider, CardMedia, CircularProgress, Card, CardContent, Divider, Button, TextField, CardHeader, Box, CardActions } from '@mui/material';
+import { Typography, CardMedia, CircularProgress, Card, CardContent, Divider, Button, TextField, CardHeader, Box, CardActions } from '@mui/material';
 
 const User = () => {
   const { user } = useContext(AuthContext);
