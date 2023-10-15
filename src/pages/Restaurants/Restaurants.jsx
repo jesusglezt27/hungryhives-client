@@ -6,7 +6,7 @@ const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5005/api/restaurants/')
+    fetch('https://hungryhives-deployed-vercel-153ss4p2i-jesusglezt27.vercel.app/api/restaurants/')
       .then(response => {
         if (response.ok) {
           return response.json();

@@ -19,7 +19,7 @@ const ReservationsPage = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:5005/api/restaurants/${id}`)
+    fetch(`https://hungryhives-deployed-vercel-153ss4p2i-jesusglezt27.vercel.app/api/restaurants/${id}`)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -59,7 +59,7 @@ const ReservationsPage = () => {
         user: user._id
       };
 
-      fetch(`http://localhost:5005/api/restaurants/${id}/reservations`, {
+      fetch(`https://hungryhives-deployed-vercel-153ss4p2i-jesusglezt27.vercel.app/api/restaurants/${id}/reservations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
