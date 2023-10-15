@@ -3,7 +3,7 @@ import axios from 'axios';
 class ExampleService {
   constructor() {
     this.api = axios.create({
-      baseURL: process.env.REACT_APP_SERVER_URL || "https://hungryhives-deployed-vercel-153ss4p2i-jesusglezt27.vercel.app"
+      baseURL: process.env.REACT_APP_SERVER_URL || "https://hungryhives-deployed-vercel-2-n9rlk71ax-jesusglezt27.vercel.app"
     });
 
     // Automatically set JWT token in the headers for every request
